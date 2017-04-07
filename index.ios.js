@@ -7,11 +7,10 @@ import {
   View,
   Navigator,
 } from 'react-native';
+import App from './app/components/App'
+import ToDoEdit from './app/components/ToDoEdit'
 
-var ToDoList = require('./app/components/ToDoList');
-var ToDoEdit = require('./app/components/ToDoEdit');
-
-export default class RN_ToDoList extends Component {
+class RN_ToDoList extends Component {
   render() {
     return (
       <Navigator
@@ -25,21 +24,20 @@ export default class RN_ToDoList extends Component {
         }} />
     );
   }
-  renderScene(route, navigator) {
-    var routeId = route.id;
+
+  renderScene = (route, navigator) => {
+    var routeId = route.id
+
     if (routeId === 'ToDoList') {
       return (
-        <View style={{flex:1}}>
-          <ToDoList
-            navigator={navigator} />
-        </View>
+        <App navigator={navigator} />
       );
     }
     if (routeId === 'ToDoEdit') {
+      const {item, id, update} = route.passProps
       return (
         <View style={{flex:1}}>
-          <ToDoEdit
-            navigator={navigator} />
+          <ToDoEdit navigator={navigator} item={item} id={id} onUpdate={update} />
         </View>
       );
     }

@@ -8,59 +8,47 @@ import {
   TouchableHighlight,
 } from 'react-native';
 var styles = require('../styles');
-class ToDoList extends Component {
-  constructor() {
-    super();
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      dataSource: ds.cloneWithRows([
-        {txt: 'Read a book', complete: false},
-        {txt: 'Take a walk', complete: true}
-      ]),
-    };
+
+// Row comparison function
+// source: http://www.reactnativeexpress.com/listview
+const rowHasChanged = (row1, row2) => row1 !== row2
+
+// DataSource template object
+const ds = new ListView.DataSource({rowHasChanged})
+
+export default class ToDoList extends Component {
+  renderItem = (rowData, sectionID, rowID) => {
+    const {txt, complete} = rowData
+    return (
+      <TouchableHighlight
+        style={styles.item}
+        onPress={() => this.props.onPressItem(rowData, rowID)}>
+        <View sytle={styles.item}>
+          <Text style={[styles.text, complete && styles.completed]}>
+            {txt}
+          </Text>
+        </View>
+      </TouchableHighlight>
+    )
   }
 
   render() {
+    var dataSource = ds.cloneWithRows(this.props.items);
+
     return (
     <View style={{flex:1}}>
       <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) =>
-          <View>
-            <TouchableHighlight
-              onPress={this.gotoEdit.bind(this)}>
-              <View sytle={styles.item}>
-                <Text style={styles.text}>
-                  {rowData.txt}
-                  </Text>
-              </View>
-            </TouchableHighlight>
-            <View style={styles.hr}/>
-          </View>
-        }
+        dataSource={dataSource}
+        renderRow={this.renderItem}
         style={styles.list}/>
         <TouchableHighlight
           style={[styles.button, styles.newButton]}
           underlayColor='#99d9f4'
-          onPress={this.gotoNew.bind(this)}>
+          onPress={this.props.onPressItem}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableHighlight>
     </View>
     );
-  }
-
-  gotoEdit() {
-    this.props.navigator.push({
-      id: 'ToDoEdit',
-      name: 'Edit ToDo',
-    });
-  }
-
-  gotoNew() {
-    this.props.navigator.push({
-      id: 'ToDoEdit',
-      name: 'New ToDo',
-    });
   }
 }
 

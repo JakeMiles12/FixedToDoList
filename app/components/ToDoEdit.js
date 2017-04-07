@@ -8,9 +8,10 @@ import {
   Navigator,
   TouchableOpacity,
 } from 'react-native'
-var styles = require('../styles');
-var t = require('tcomb-form-native');
-let Form = t.form.Form;
+var styles = require('../styles')
+import InputForm from './InputForm'
+var t = require('tcomb-form-native')
+let Form = t.form.Form
 
 var ToDo = t.struct({txt: t.Str, complete: t.Bool});
 
@@ -24,48 +25,35 @@ var options = {
   }
 };
 
-class ToDoEdit extends Component {
+export default class ToDoEdit extends Component {
   constructor() {
     super();
     //this.onUpdate = this.onUpdate.bind(this);
   }
 
-  onChange() {}
-  onUpdate() {}
-
   render() {
     return (
       <Navigator
-        renderScene={this.renderScene.bind(this)}
+        renderScene={this.renderScene}
         navigator={this.props.navigator}
         navigationBar={
-          <Navigator.NavigationBar style={{backgroundColor: '#246dd5'}}
-              routeMapper={NavigationBarRouteMapper} />
+          <Navigator.NavigationBar style={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}}
+              routeMapper={NavigationBarRouteMapper(this.props)} />
         } />
     )
   }
 
-  renderScene(route, navigator) {
+  renderScene=(route, navigator) => {
     return(
-      <View style={styles.todo}>
-        <Form
-          ref="form"
-          type={ToDo}
-          onChange={this.onChange}
-          options={options}
-          value={[]}/>
-        <TouchableHighlight
-          style={[styles.button, styles.saveButton]}
-          onPress={this.onUpdate}
-          underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableHighlight>
-      </View>
+      <InputForm
+        item={this.props.item}
+        id={this.props.id}
+        onUpdate={this.props.onUpdate}/>
     );
   }
 }
 
-var NavigationBarRouteMapper = {
+var NavigationBarRouteMapper = props => ({
   LeftButton(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
@@ -83,11 +71,11 @@ var NavigationBarRouteMapper = {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
         <Text style={styles.pageTitle}>
-          Edit ToDo
+          {props.item.txt || 'New Item'}
         </Text>
       </TouchableOpacity>
     );
   }
-};
+})
 
 module.exports = ToDoEdit;
