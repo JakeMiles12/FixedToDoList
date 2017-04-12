@@ -7,11 +7,6 @@ var styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: '#ffffff',
   },
-  item: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'red',
-  },
   text: {
     fontSize: 18,
     marginLeft: 5,
@@ -23,7 +18,7 @@ var styles = StyleSheet.create({
     color: '#cccccc'
   },
   hr: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: '#48BBEC',
     height: 1,
     marginLeft: 0,
     marginRight: 0,
@@ -69,7 +64,7 @@ var styles = StyleSheet.create({
     margin: 10,
   },
   header: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: '#48BBEC',
     padding: 15,
   }
 });
